@@ -12,21 +12,9 @@ export class App extends React.Component {
     };
   }
   componentDidMount() {
-    const defaultArr = [
-      { name: 'Yaroslav Sych', number: '057-00-63', id: 'id-1' },
-      { name: 'Rosie Simpson', number: '459-12-56', id: 'id-2' },
-      { name: 'Alexandr Repeta', number: '645-17-79', id: 'id-3' },
-      { name: 'Annie Copeland', number: '227-91-26', id: 'id-4' },
-    ];
-    const storedContacts = JSON.parse(localStorage.getItem('contactsList'));
-    if (storedContacts && storedContacts.length > 0) {
-      this.setState({ contacts: storedContacts });
-    } else {
-      localStorage.setItem('contactsList', JSON.stringify(defaultArr));
-      this.setState({
-        contacts: defaultArr,
-      });
-    }
+    this.setState({
+      contacts: JSON.parse(localStorage.getItem('contactsList')),
+    });
   }
 
   handleSubbmit = newContact => {
