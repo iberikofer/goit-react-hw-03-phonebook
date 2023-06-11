@@ -12,10 +12,6 @@ export class App extends React.Component {
     };
   }
 
-  static getDerivedStateFromError(error) {
-    console.log(error);
-  }
-
   componentDidMount() {
     const storedContacts = localStorage.getItem(this.storageKey);
     if (storedContacts) {
