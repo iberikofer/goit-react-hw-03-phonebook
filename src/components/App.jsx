@@ -8,13 +8,26 @@ export class App extends React.Component {
     super();
     this.state = {
       contacts: [],
-      filter: '',
+      filterText: '',
     };
   }
+
+  static getDerivedStateFromError(error) {
+    console.log(error);
+  }
+
   componentDidMount() {
-    this.setState({
-      contacts: JSON.parse(localStorage.getItem('contactsList')),
-    });
+    const storedContacts = localStorage.getItem(this.storageKey);
+    if (storedContacts) {
+      this.setState({ contacts: JSON.parse(storedContacts) });
+    }
+  }
+
+  componentDidUpdate(prevState) {
+    const { contacts } = this.state;
+    if (prevState.contacts !== contacts) {
+      localStorage.setItem(this.storageKey, JSON.stringify(contacts));
+    }
   }
 
   handleSubbmit = newContact => {
@@ -23,14 +36,8 @@ export class App extends React.Component {
     }));
   };
 
-  componentDidUpdate() {
-    localStorage.setItem('contactsList', JSON.stringify(this.state.contacts));
-  }
-
   handleFilter = newFilter => {
-    this.setState(() => ({
-      filter: newFilter,
-    }));
+    this.setState({ filterText: newFilter });
   };
 
   handleDelete = contactId => {
@@ -41,7 +48,8 @@ export class App extends React.Component {
   };
 
   render() {
-    const { contacts, filter } = this.state;
+    const { contacts, filterText } = this.state;
+
     return (
       <div
         style={{
@@ -61,7 +69,7 @@ export class App extends React.Component {
         <Filter handleFilter={this.handleFilter} />
         <ContactList
           contacts={contacts}
-          filter={filter}
+          filterText={filterText}
           handleDelete={this.handleDelete}
         />
       </div>
